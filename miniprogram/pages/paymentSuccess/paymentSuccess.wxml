@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="success-icon">✓</view>
+  <view class="success-text">支付成功</view>
+  
+  <view class="order-info">
+    <view class="info-item">
+      <text class="label">套餐名称：</text>
+      <text class="value">{{packageName}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">获得积分：</text>
+      <text class="value">{{credits}}积分</text>
+    </view>
+    <view class="info-item">
+      <text class="label">有效期：</text>
+      <text class="value">{{days}}天</text>
+    </view>
+    <view class="info-item">
+      <text class="label">支付金额：</text>
+      <text class="value">¥{{price}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">购买时间：</text>
+      <text class="value">{{purchaseTime}}</text>
+    </view>
+  </view>
+
+  <view class="button-group">
+    <button class="btn secondary" bindtap="backToHome">返回首页</button>
+    <button class="btn primary" bindtap="continueBuy">继续购买</button>
+  </view>
+</view>

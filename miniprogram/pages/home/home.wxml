@@ -1,0 +1,49 @@
+<!-- pages/home/home.wxml - 纯净上线版 -->
+<view class="container home">
+  <view class="hero">
+    <image class="hero-icon" src="/images/logo.png"></image>
+    <view class="hero-title">途胜运营智能体</view>
+    <view class="hero-subtitle">您的专属AI智能体运营专家</view>
+    <view class="hero-description">利润增长100%的秘密武器</view>
+  </view>
+
+  <view class="ai_warning_box">
+    <text class="ai_warning_emoji">🤖</text>
+    <text class="ai_warning_text">本服务提供AI生成内容，请谨慎参考</text>
+  </view>
+
+  <view class="workflow-selector">
+    <view class="card-list">
+      
+      <view class="card" bindtap="handleStart" data-type="sop">
+        <image class="card-icon" src="/images/icon_sop.png"></image> 
+        <view class="card-title">专家级Listing生成</view> 
+        <view class="card-desc">一键生成 7张主图+10段A+视觉SOP</view>
+        <button class="card-button">
+          选择并开始
+        </button>
+      </view>
+
+      <view class="card" bindtap="handleStart" data-type="title">
+        <image class="card-icon" src="/images/title-icon.png"></image>
+        <view class="card-title">标题五点描述撰写</view>
+        <view class="card-desc">一键生成爆款标题和高转化五点描述</view>
+        <button class="card-button">
+          选择并开始
+        </button>
+      </view>
+
+      <view class="card" bindtap="handleStart" data-type="ads">
+        <image class="card-icon" src="/images/icon_ads.png"></image>
+        <view class="card-title">智能广告决策分析</view>
+        <view class="card-desc">一键生成五步专家报告，可直接执行</view>
+        <button class="card-button">
+          选择并开始
+        </button>
+      </view>
+      
+    </view>
+  </view>
+
+  <view class="footer-note">首次登录将自动创建账户并赠送3次免费额度</view>
+</view>

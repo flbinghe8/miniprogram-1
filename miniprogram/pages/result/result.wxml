@@ -1,0 +1,118 @@
+<!-- pages/result/result.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">{{pageTitle}}</text>
+  </view>
+  
+  <view class="result-warning-box">
+    <text class="warning-emoji">🤖</text>
+    <text class="warning-text">AI生成内容，请谨慎参考</text>
+  </view>
+
+  <!-- 多方案标签页 -->
+  <view class="tabs" wx:if="{{schemes.length > 1}}">
+    <view 
+      class="tab {{activeTab === index ? 'active' : ''}}" 
+      wx:for="{{schemes}}" 
+      wx:key="index"
+      data-index="{{index}}"
+      bindtap="onTabChange"
+    >
+      {{item.name}}
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="result-box">
+    <view class="scheme-content">
+      <view class="scheme-item" wx:for="{{schemes}}" wx:key="index" wx:if="{{activeTab === index}}">
+        
+        <!-- SEO标题方案 -->
+        <view class="section" wx:if="{{item.title_zh}}">
+          <view class="section-title">中文标题</view>
+          <view class="section-content title-text">{{item.title_zh}}</view>
+          <view class="copy-btn" data-content="{{item.title_zh}}" bindtap="copyContent">复制</view>
+        </view>
+
+        <view class="section" wx:if="{{item.title_en}}">
+          <view class="section-title">英文标题</view>
+          <view class="section-content title-text">{{item.title_en}}</view>
+          <view class="copy-btn" data-content="{{item.title_en}}" bindtap="copyContent">复制</view>
+        </view>
+
+        <!-- 五点描述 -->
+        <view class="section" wx:if="{{item.bullet_points_zh && item.bullet_points_zh.length > 0}}">
+          <view class="section-title">五点描述（中文）</view>
+          <view class="bullet-points">
+            <view class="bullet-item" wx:for="{{item.bullet_points_zh}}" wx:key="index">
+              <text class="bullet-index">{{index + 1}}.</text>
+              <text class="bullet-text">{{item}}</text>
+              <view class="copy-btn-small" data-content="{{item}}" bindtap="copyContent">复制</view>
+            </view>
+          </view>
+          <view class="copy-btn" data-bullet-points="{{item.bullet_points_zh}}" bindtap="copyAllBulletPoints">复制全部</view>
+        </view>
+
+        <view class="section" wx:if="{{item.bullet_points_en && item.bullet_points_en.length > 0}}">
+          <view class="section-title">五点描述（英文）</view>
+          <view class="bullet-points">
+            <view class="bullet-item" wx:for="{{item.bullet_points_en}}" wx:key="index">
+              <text class="bullet-index">{{index + 1}}.</text>
+              <text class="bullet-text">{{item}}</text>
+              <view class="copy-btn-small" data-content="{{item}}" bindtap="copyContent">复制</view>
+            </view>
+          </view>
+          <view class="copy-btn" data-bullet-points="{{item.bullet_points_en}}" bindtap="copyAllBulletPoints">复制全部</view>
+        </view>
+
+        <!-- SOP图片内容 -->
+        <view class="section" wx:if="{{item.type === 'sop_images'}}">
+          <view class="section-title">{{item.name}}</view>
+          <view class="images-list">
+            <view class="image-item" wx:for="{{item.images}}" wx:key="index">
+              <view class="image-title">{{item.title}}</view>
+              <view class="image-headline">{{item.headline}}</view>
+              <view class="image-subtext">{{item.subtext}}</view>
+              <view class="copy-btn" data-image="{{item}}" bindtap="copyImageContent">复制内容</view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 广告报告内容 -->
+        <view class="section" wx:if="{{item.type === 'ads_summary'}}">
+          <view class="section-title">核心业绩概览</view>
+          <view class="ads-summary">
+            <view class="summary-item" wx:for="{{item.summary}}" wx:key="key">
+              <text class="summary-label">{{item.key}}</text>
+              <text class="summary-value">{{item.value}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="section" wx:if="{{item.type === 'ads_actions'}}">
+          <view class="section-title">行动方案</view>
+          <view class="actions-list">
+            <view class="action-item" wx:for="{{item.actions}}" wx:key="index">
+              <view class="action-priority {{item.priority}}">{{item.priority}}优先级</view>
+              <view class="action-content">
+                <text class="action-text">{{item.action}}</text>
+                <text class="action-reason">{{item.reason}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 显示原始内容（如果没有结构化数据） -->
+        <view class="section" wx:if="{{item.content}}">
+          <view class="section-title">生成内容</view>
+          <view class="section-content">{{item.content}}</view>
+        </view>
+
+      </view>
+    </view>
+  </scroll-view>
+  
+  <view class="actions">
+    <button class="button-primary" bindtap="copyReport">一键复制全文</button>
+    <button class="button-secondary" bindtap="editInput">返回修改</button>
+  </view>
+</view>

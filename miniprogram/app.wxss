@@ -1,0 +1,43 @@
+/** app.wxss **/
+page {
+    background-color: #F7F8FA; /* 轻柔的背景灰，比纯白更有质感 */
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+    color: #323233; /* 主文字颜色，深灰 */
+  }
+  
+  /* 主要操作按钮 - 蓝色，代表科技、高效 */
+  .button-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #3C6AFB;
+    color: #ffffff;
+    border: none;
+    box-sizing: border-box;
+  }
+  
+  /* 按钮按下的效果 */
+  .button-primary-hover {
+    background-color: #2F53C4;
+  }
+  
+  /* 辅助按钮 - 灰色 */
+  .button-secondary {
+    background-color: #EFEFEF;
+    color: #323233;
+  }
+  .button-secondary-hover {
+    background-color: #dcdcdc;
+  }
+  
+  /* 全局容器统一样式 */
+  .container {
+    padding: 24px;
+    box-sizing: border-box;
+  }

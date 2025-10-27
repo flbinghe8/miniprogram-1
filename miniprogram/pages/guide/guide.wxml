@@ -1,0 +1,25 @@
+<!-- pages/guide/guide.wxml -->
+<view class="container">
+  
+  <view class="guide-section">
+    <view class="section-title">快速入门</view>
+    <view class="guide-list">
+      <view class="guide-item" wx:for="{{guideSections}}" wx:key="title">
+        <text class="item-title">{{ index + 1 }}. {{ item.title }}</text>
+        <text class="item-content">{{ item.content }}</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="guide-section">
+    <view class="section-title">添加到桌面</view>
+    <view class="desktop-card">
+      <text class="desktop-tip-text">💡 {{ desktopTip }}</text>
+      <!-- 小程序无法直接触发添加到桌面的操作，只能引导用户 -->
+      <view class="desktop-steps">
+        <text>点击右上角「...」-> 选择「添加到我的小程序」-> 选择「添加到桌面」</text>
+      </view>
+    </view>
+  </view>
+  
+</view>

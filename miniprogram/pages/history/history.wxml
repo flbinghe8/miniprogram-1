@@ -1,0 +1,70 @@
+<!-- pages/history/history.wxml -->
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="title">历史记录</text>
+    <text class="subtitle">{{historyList.length}} 条生成记录</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{isLoading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{historyList.length === 0 && !isLoading}}" class="empty-state">
+    <image class="empty-icon" src="/images/empty-history.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无生成记录</text>
+    <text class="empty-subtext">开始使用功能后，记录会出现在这里</text>
+  </view>
+
+  <!-- 历史记录列表 -->
+  <scroll-view wx:else class="history-scroll" scroll-y>
+    <view class="history-list">
+      <view class="history-item" 
+            wx:for="{{historyList}}" 
+            wx:key="_id" 
+            data-item="{{item}}" 
+            bindtap="goToResult">
+        
+        <!-- 左侧类型图标 -->
+        <view class="item-left">
+          <view class="type-icon {{item.workflowType}}">
+            <text class="icon-text">
+              {{item.workflowType === 'sop' ? 'S' : 
+                item.workflowType === 'title' ? 'T' : 
+                item.workflowType === 'ads' ? 'A' : '?'}}
+            </text>
+          </view>
+        </view>
+
+        <!-- 中间内容区域 -->
+        <view class="item-content">
+          <view class="item-header">
+            <text class="workflow-name">
+              {{item.workflowType === 'sop' ? 'Listing SOP' : 
+                item.workflowType === 'title' ? '标题五点描述' : 
+                item.workflowType === 'ads' ? '广告分析' : '未知类型'}}
+            </text>
+            <text class="time">{{item.createdTime}}</text>
+          </view>
+          
+          <view class="content-preview">
+            {{item.contentPreview || '无内容预览'}}
+          </view>
+        </view>
+
+        <!-- 右侧操作按钮 - 调整了间距 -->
+        <view class="item-actions">
+          <button class="delete-btn" 
+                  data-id="{{item._id}}" 
+                  catchtap="deleteRecord">
+            <text class="delete-text">删除</text>
+          </button>
+        </view>
+
+      </view>
+    </view>
+  </scroll-view>
+</view>

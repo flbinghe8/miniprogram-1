@@ -1,0 +1,232 @@
+/* pages/home/home.wxss (最终完整版) */
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+/* --- Hero Section Styles --- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px; /* 缩小一点和下面卡片的距离 */
+}
+
+.hero-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.hero-title {
+  font-size: 48rpx; 
+  font-weight: 700; 
+  margin-bottom: 20rpx; 
+  color: #000000; 
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #333333;
+}
+
+.hero-description {
+  font-size: 18px;
+  font-weight: 700;
+  color: #007aff; 
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* --- Features Section Styles (原文件保留，虽然新版没用到但无影响) --- */
+.features {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+.feature-text {
+  font-size: 13px;
+  color: #555;
+}
+
+/* --- Footer Note Style --- */
+.footer-note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+
+/* --- 以下是从 create.wxss 移植过来的卡片样式 --- */
+.workflow-selector {
+width: 100%;
+margin-top: 10px;
+margin-bottom: 20px;
+}
+
+.workflow-selector .card-list {
+display: flex;
+flex-direction: column;
+gap: 30rpx; 
+}
+
+.workflow-selector .card {
+background-color: #fff;
+border-radius: 24rpx;
+box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+padding: 50rpx 40rpx;
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+transition: transform 0.2s ease;
+overflow: hidden;
+position: relative;
+}
+
+.workflow-selector .card-icon {
+width: 100rpx;
+height: 100rpx;
+margin-bottom: 10rpx;
+object-fit: contain;
+}
+
+.workflow-selector .card-title {
+font-size: 36rpx;
+font-weight: 600;
+color: #1c1c1e;
+margin-bottom: 20rpx;
+}
+
+.workflow-selector .card-desc {
+font-size: 26rpx;
+color: #8e8e93;
+line-height: 1.5;
+margin-bottom: 20rpx;
+}
+
+.card-button {
+width: 80%;
+height: 80rpx;
+line-height: 80rpx;
+background-color: #007aff;
+color: #fff;
+font-size: 30rpx;
+font-weight: 500;
+border-radius: 40rpx;
+border: none;
+}
+
+.card-button:active {
+background-color: #0056b3;
+}
+
+.time-tip {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+  margin-top: 20rpx;
+  padding: 20rpx;
+}
+/* index.wxss 新增样式 */
+
+.ai_warning_box {
+  display: flex;
+  align-items: center;
+  /* 图片中是一个渐变的紫色，这里用一个近似的颜色 */
+  background: linear-gradient(90deg, #7b68ee, #b789e6);
+  border-radius: 12rpx;
+  padding: 24rpx 30rpx;
+  margin-bottom: 50rpx;
+  width: 90%; /* 调整宽度使其居中 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- AI 提示框样式 (合并后的最终版本) --- */
+
+.ai_warning_box {
+  /* 1. 布局和居中 */
+  display: flex;
+  align-items: center;    /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  
+  /* 2. 视觉效果 */
+  background: linear-gradient(90deg, #7b68ee, #9966cc);
+  border-radius: 12rpx;
+  
+  /* 3. 尺寸和间距 */
+  padding: 24rpx 30rpx;
+  width: 90%; 
+  
+  /* 4. 最终外边距：上方 30rpx，左右居中，下方 10rpx（最窄间距）*/
+  margin: 30rpx auto 10rpx auto; 
+}
+
+/* 提示框内的 Emoji/图标 样式（保持不变） */
+.ai_warning_emoji {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+  color: #ffffff; 
+  line-height: 1; 
+}
+
+/* 提示框内的文字样式（保持不变） */
+.ai_warning_text {
+  color: #ffffff; /* 字体反白 */
+  font-size: 28rpx;
+  font-weight: 500;
+  text-align: left; 
+}
+/* pages/home/home.wxss 新增黄色提示框样式 */
+
+.result-tip-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* 模仿截图的淡黄色背景和边框 */
+  background-color: #fffaf0; 
+  border: 1px solid #ffcc66; /* 淡橘色边框 */
+  border-radius: 12rpx;
+  
+  padding: 20rpx 30rpx;
+  /* 调整 margin 让它位于紫色框下方，并与下方卡片保持距离 */
+  margin: 20rpx auto 30rpx auto; 
+  width: 90%; 
+}
+
+.result-tip-emoji {
+  /* 使用 Emoji 💡 代替图片，避免加载错误 */
+  font-size: 38rpx; 
+  line-height: 1;
+  margin-right: 15rpx;
+}
+
+.result-tip-text {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #cc9900; /* 淡橘黄色文字 */
+}

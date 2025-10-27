@@ -1,0 +1,75 @@
+/* pages/orders/orders.wxss */
+.container {
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ebedf0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888;
+}
+
+.order-list {
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #f7f8fa;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.item-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-title {
+  font-size: 15px;
+  color: #323233;
+  margin-bottom: 4px;
+}
+
+.item-date {
+  font-size: 12px;
+  color: #969799;
+}
+
+.item-right {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.positive {
+  color: #07c160; /* 绿色代表增加 */
+}
+
+.negative {
+  color: #ee0a24; /* 红色代表消耗 */
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 40px 0;
+  font-size: 14px;
+  color: #969799;
+}

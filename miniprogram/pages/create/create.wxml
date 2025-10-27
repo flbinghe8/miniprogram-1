@@ -1,0 +1,214 @@
+<!-- pages/create/create.wxml (修复版) -->
+<view class="container">
+  
+  <view class="header">
+    <view class="header-left">
+      <!-- 移除这个箭头 -->
+      <!-- <view class="back-icon" bindtap="goBack">‹</view> -->
+      <view class="title">
+        {{ 
+          workflowType === 'sop' ? '专家级Listing生成' : 
+          workflowType === 'ads' ? '智能广告决策分析' : 
+          '标题五点描述撰写'
+        }}
+      </view>
+    </view>
+    <view class="credits">剩余额度：{{remainingCount}}次</view>
+  </view>
+  
+  <view class="ai_warning_box">
+    <text class="ai_warning_emoji">🤖</text>
+    <text class="ai_warning_text">本服务提供AI生成内容，请谨慎参考</text>
+  </view>
+
+  <view class="form-ai-notice">
+    <text class="ai-notice-text">
+      {{ 
+        workflowType === 'sop' ? 
+        '💡 脚本化输出：直接交付设计师的视觉文案' : 
+        workflowType === 'ads' ?
+        '🔍 策略闭环：诊断、行动、风控一体化' :
+        '🚀 一键生成3套SEO/转化/平衡策略标题五点描述'
+      }}
+    </text>
+  </view>
+
+  <!-- SOP内容生成页面 -->
+  <view class="sop-form" wx:if="{{workflowType === 'sop'}}">
+    <view class="form-item">
+      <view class="form-label">产品名称<text class="required">*</text></view>
+      <textarea class="form-textarea single-line" maxlength="100" placeholder-class="phcolor" 
+                placeholder="例如：DJI Osmo Mobile 8 手机云台稳定器" 
+                bindinput="onProductNameInput" value="{{productName}}"></textarea>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">核心卖点<text class="required">*</text></view> 
+      <textarea class="form-textarea" maxlength="5000" placeholder-class="phcolor" 
+                placeholder="例如：三轴机械云台增稳/AI智能跟拍7.0/磁吸快拆设计/内置可伸缩延长杆/内置可调亮度色温补光灯（多个卖点请用逗号、顿号、斜杠或换行分隔）"
+                bindinput="onProductFunctionsInput" value="{{productFunctions}}"></textarea>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">目标用户与场景<text class="required">*</text></view>
+      <textarea class="form-textarea" maxlength="5000" placeholder-class="phcolor" 
+                placeholder="例如：热爱分享日常的Vlog博主/希望记录旅行点滴的爱好者/希望稳定记录孩子成长的年轻父母/稳定流畅视频的普通用户（多个用户类型请用逗号、顿号、斜杠或换行分隔）"
+                bindinput="onTargetAudienceInput" value="{{targetAudience}}"></textarea>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">产品材质</view>
+      <input class="form-input" placeholder="例如：铝合金" 
+             bindinput="onMaterialInput" value="{{material}}" />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">电池续航</view>
+      <input class="form-input" placeholder="例如：10小时" 
+             bindinput="onBatteryLifeInput" value="{{batteryLife}}" />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">产品尺寸</view>
+      <input class="form-input" placeholder="例如：折叠175x75x35mm" 
+             bindinput="onDimensionsInput" value="{{dimensions}}" />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">产品重量</view>
+      <input class="form-input" placeholder="例如：295克" 
+             bindinput="onWeightInput" value="{{weight}}" />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">防水等级</view>
+      <input class="form-input" placeholder="例如：IPX4" 
+             bindinput="onWaterproofRatingInput" value="{{waterproofRating}}" />
+    </view>
+
+    <view class="time-tip" wx:if="{{workflowType === 'sop'}}">
+      ⏱️ AI生成通常需要1分钟，请耐心等待
+    </view>
+
+    <view class="form-hint" wx:if="{{!productName || !productFunctions || !targetAudience}}">
+      请填写所有必填项（标*字段）
+    </view>
+
+    <button class="button-primary" hover-class="button-primary-hover" 
+            bindtap="handleSopSubmit" loading="{{isLoading}}"
+            disabled="{{!productName || !productFunctions || !targetAudience}}">
+      立即生成
+    </button>
+  </view>
+
+  <!-- ==================== 广告分析页面 ==================== -->
+  <view class="ads-form" wx:if="{{workflowType === 'ads'}}">
+    <view class="form-item">
+      <view class="form-label">业务目标<text class="required">*</text></view>
+      <textarea class="form-textarea" maxlength="1000" placeholder-class="phcolor" 
+                placeholder="例如：我的目标是提升整体利润，同时将广告ACoS控制在15%以下。希望识别高转化关键词，优化广告结构，提升ROAS。"
+                bindinput="onGoalInput" value="{{businessGoal}}"></textarea>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">广告数据文件<text class="required">*</text></view>
+      
+      <!-- 下载模板按钮 -->
+      <button class="download-btn" bindtap="downloadTemplate">
+        <image class="download-icon" src="/images/icon_download.png"></image>
+        下载数据模板
+      </button>
+      
+      <!-- 上传文件按钮 -->
+      <button class="upload-btn" bindtap="chooseFile">
+        <image class="upload-icon" src="/images/icon_upload.png"></image>
+        {{fileName ? '重新上传文件' : '选择数据文件'}}
+      </button>
+      
+      <!-- 文件信息显示 -->
+      <view wx:if="{{fileName}}" class="file-info">
+        <text class="file-name">已选择: {{fileName}}</text>
+        <text class="clear-file" bindtap="clearFile">清除</text>
+      </view>
+      
+      <view class="template-tip">
+        请下载模板，填写数据后上传。支持 CSV/TXT 格式
+      </view>
+    </view>
+
+    <view class="time-tip">
+      ⏱️ AI分析通常需要1分钟，请耐心等待
+    </view>
+
+    <view class="form-hint" wx:if="{{!businessGoal || !rawData}}">
+      请填写业务目标并上传数据文件
+    </view>
+
+    <button class="button-primary" hover-class="button-primary-hover" 
+            bindtap="startAnalysis" loading="{{isLoading}}"
+            disabled="{{!businessGoal || !rawData}}">
+      开始分析
+    </button>
+  </view>
+</view>
+
+<!-- ==================== 标题五点描述页面 ==================== -->
+<view class="title-form" wx:if="{{workflowType === 'title'}}">
+  <view class="form-item">
+    <view class="form-label">产品名称<text class="required">*</text></view>
+    <textarea class="form-textarea single-line" maxlength="100" placeholder-class="phcolor" 
+              placeholder="例如：DJI Osmo Mobile 8 手机云台稳定器" 
+              bindinput="onProductNameInput" value="{{productName}}"></textarea>
+  </view>
+
+  <view class="form-item">
+    <view class="form-label">核心卖点<text class="required">*</text></view> 
+    <textarea class="form-textarea" maxlength="5000" placeholder-class="phcolor" 
+              placeholder="例如：三轴机械云台增稳/AI智能跟拍7.0/磁吸快拆设计/内置可伸缩延长杆/内置可调亮度色温补光灯（多个卖点请用逗号、顿号、斜杠或换行分隔）"
+              bindinput="onProductFunctionsInput" value="{{productFunctions}}"></textarea>
+  </view>
+
+  <view class="form-item">
+    <view class="form-label">核心关键词<text class="required">*</text></view>
+    <textarea class="form-textarea" maxlength="1000" placeholder-class="phcolor" 
+              placeholder="例如：手机稳定器, 手机云台, 摄影配件, Vlog设备（多个关键词请用逗号、顿号或换行分隔）"
+              bindinput="onKeywordsInput" value="{{keywords}}"></textarea>
+  </view>
+
+  <view class="time-tip">
+    ⏱️ AI生成通常需要1分钟，请耐心等待
+  </view>
+
+  <view class="form-hint" wx:if="{{!productName || !productFunctions || !keywords}}">
+    请填写所有必填项（标*字段）
+  </view>
+
+  <button class="button-primary" hover-class="button-primary-hover" 
+          bindtap="handleTitleSubmit" loading="{{isLoading}}"
+          disabled="{{!productName || !productFunctions || !keywords}}">
+    立即生成
+  </button>
+</view>
+
+<!-- 🚨 只保留一个弹窗！删除 van-dialog，只使用 custom-dialog -->
+<view class="custom-dialog" wx:if="{{showPremiumDialog}}">
+  <view class="dialog-mask"></view>
+  <view class="dialog-content">
+    <view class="dialog-icon">🔒</view>
+    <view class="dialog-title">试用次数已用完！</view>
+    <view class="dialog-desc">您已享受3次免费体验。注册账号后即可购买超值用量包，无限畅享AI分析功能。</view>
+    
+    <!-- 手机号输入 -->
+    <view class="input-section" wx:if="{{!hasPhone}}">
+      <input class="phone-input" type="number" placeholder="请输入手机号" 
+             maxlength="11" value="{{phoneNumber}}" bindinput="onPhoneInput" />
+    </view>
+
+    <view class="action-buttons">
+      <button class="confirm-btn" bindtap="{{hasPhone ? 'goToPayPage' : 'registerAndGoToPay'}}">
+        {{hasPhone ? '选择套餐' : '注册并选择套餐'}}
+      </button>
+      <button class="cancel-btn" bindtap="onCancelDialog">稍后再说</button>
+    </view>
+  </view> 
+</view>

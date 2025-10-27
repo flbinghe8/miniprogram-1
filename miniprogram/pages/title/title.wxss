@@ -1,0 +1,365 @@
+/* pages/create/create.wxss (完整最终版) */
+
+/* --- 页面通用样式 --- */
+.container {
+  padding: 40rpx;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* --- Header 区域样式 --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 10rpx;
+  margin-bottom: 40rpx;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* 移除 back-icon 相关样式 */
+.back-icon {
+  display: none; /* 完全隐藏箭头 */
+}
+
+.header .title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1c1c1e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  text-align: left; /* 确保左对齐 */
+  margin: 0;
+  padding: 0;
+}
+
+.header .credits {
+  font-size: 28rpx;
+  color: #8e8e93;
+  flex-shrink: 0;
+  margin-left: 20rpx;
+}
+
+/* --- 工作流选择卡片样式 --- */
+.workflow-selector .card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+.workflow-selector .card {
+  background-color: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+  padding: 50rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.workflow-selector .card:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+.workflow-selector .card-icon {
+  width: 100rpx;
+  height: 100rpx;
+  margin-bottom: 30rpx;
+  object-fit: contain;
+}
+.workflow-selector .card-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1c1c1e;
+  margin-bottom: 12rpx;
+}
+.workflow-selector .card-desc {
+  font-size: 26rpx;
+  color: #8e8e93;
+  line-height: 1.5;
+}
+
+/* --- 表单通用样式 --- */
+.form-item {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+.form-label {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.required {
+  color: #ff4d4f;
+  margin-left: 8rpx;
+}
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+  padding: 0;
+}
+.form-textarea.single-line {
+  min-height: 40rpx;
+  height: 40rpx;
+}
+.phcolor {
+  color: #bbbbbb;
+  font-size: 30rpx;
+}
+
+/* ======================================================= */
+/* --- 广告分析特定样式 (已修复图标大小问题) --- */
+/* ======================================================= */
+.download-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 96rpx;
+background-color: #007aff; /* 主色调，非常醒目 */
+color: white;
+border-radius: 12rpx;
+font-size: 30rpx;
+margin-bottom: 30rpx; /* 和上传按钮之间留出间距 */
+border: none;
+}
+.download-icon {
+width: 40rpx;   /* 修正图标大小 */
+height: 40rpx;
+margin-right: 15rpx; /* 图标和文字的间距 */
+}
+.ads-form .upload-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 96rpx;
+background-color: #f0f8ff;
+border: 2rpx dashed #a0d9ff;
+border-radius: 12rpx;
+color: #1890ff;
+font-size: 30rpx;
+}
+.ads-form .upload-icon {
+width: 40rpx;
+height: 40rpx;
+margin-right: 15rpx;
+object-fit: contain;
+}
+.ads-form .template-tip {
+font-size: 26rpx;
+color: #999;
+text-align: center; /* 提示居中更美观 */
+margin-top: 20rpx;
+}
+.ads-form .download-link {
+color: #1890ff;
+}
+/* ======================================================= */
+/* --- 广告分析样式结束 --- */
+/* ======================================================= */
+
+/* --- 提交按钮 --- */
+.button-primary {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background-color: #007aff;
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 500;
+  border-radius: 20rpx;
+  margin-top: 40rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(0, 122, 255, 0.25);
+}
+.button-primary-hover {
+  background-color: #0056b3;
+  opacity: 0.9;
+}
+button[disabled] {
+  background-color: #cce4ff;
+  box-shadow: none;
+  color: #fff;
+}
+
+/* --- 等待提示样式 --- */
+.time-tip {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+  margin-top: 20rpx;
+  padding: 20rpx;
+}
+
+.form-hint {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 15rpx;
+  text-align: center;
+}
+
+/* 统一输入框样式 */
+.form-input, .form-textarea {
+font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
+font-size: 30rpx;
+color: #333;
+width: 100%;
+line-height: 1.6;
+}
+
+/* 文件信息显示 */
+.file-info {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #f8f9fa;
+padding: 20rpx;
+border-radius: 8rpx;
+margin-top: 20rpx;
+font-size: 28rpx;
+}
+
+.file-name {
+color: #333;
+flex: 1;
+}
+
+.clear-file {
+color: #ff4d4f;
+font-size: 26rpx;
+}
+
+.form-hint {
+font-size: 24rpx;
+color: #999;
+margin-top: 15rpx;
+padding-left: 10rpx;
+text-align: center; /* 添加这行实现居中 */
+}
+/* pages/create/create.wxss */
+/* pages/create/create.wxss 新增双提示框样式 */
+
+/* --- 1. 紫色 AI 谨慎提示框样式 --- */
+.ai_warning_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #7b68ee, #9966cc);
+  border-radius: 12rpx;
+  padding: 24rpx 30rpx;
+  margin: 30rpx auto 15rpx auto; 
+  width: 90%; 
+
+/* 模仿截图的渐变紫色 */
+background: linear-gradient(90deg, #7b68ee, #9966cc);
+border-radius: 12rpx;
+
+padding: 24rpx 30rpx;
+
+/* 间距调整：位于 header 下方，与下方黄色框隔开 */
+margin: 30rpx auto 15rpx auto; 
+width: 90%; 
+}
+
+.ai_warning_emoji {
+  font-size: 36rpx; 
+  margin-right: 15rpx;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.ai_warning_text {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* --- 2. 黄色/价值提示框样式 (form-ai-notice) --- */
+.form-ai-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fffaf0; 
+  border: 1px solid #ffcc66;
+  border-radius: 12rpx;
+  padding: 5rpx 30rpx;
+  margin: 0 auto 40rpx auto; 
+  width: 90%; 
+}
+
+.ai-notice-text {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #cc9900;
+  white-space: nowrap; 
+}
+/* --- Header 区域样式 --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 10rpx;
+  margin-bottom: 40rpx;
+  position: relative; /* 添加这个 */
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex: 1; /* 确保左侧占据空间 */
+}
+.back-icon {
+  font-size: 48rpx;
+  color: #000;
+  font-weight: bold;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+  padding: 12rpx;
+  box-sizing: content-box;
+  /* 移除这些绝对定位属性 */
+  /* position: absolute; */
+  /* left: 0; */
+  /* top: 50%; */
+  /* transform: translateY(-50%); */
+}
+.header .title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1c1c1e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1; /* 标题占据剩余空间 */
+}
+.header .credits {
+  font-size: 28rpx;
+  color: #8e8e93;
+  flex-shrink: 0;
+  margin-left: 20rpx;
+}

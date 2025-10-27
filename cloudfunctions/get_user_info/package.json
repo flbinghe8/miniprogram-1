@@ -1,0 +1,15 @@
+{
+  "name": "get_user_info",
+  "version": "1.0.0",
+  "description": "获取用户的额度、会员状态等信息。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

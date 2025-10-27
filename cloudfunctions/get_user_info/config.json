@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "openapi": [
+      "cloudbase"
+    ]
+  },
+  "memory": "128MB",
+  "timeout": 5
+}

@@ -1,0 +1,67 @@
+/* pages/guide/guide.wxss */
+.container {
+  padding: 40rpx;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+}
+
+.guide-section {
+  margin-bottom: 60rpx;
+}
+
+.section-title {
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+  border-left: 8rpx solid #5A45FF;
+  padding-left: 20rpx;
+}
+
+.guide-item {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.item-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #5A45FF;
+  margin-bottom: 10rpx;
+}
+
+.item-content {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 添加到桌面区域样式 */
+.desktop-card {
+  background-color: #fffaf0; /* 亮黄色背景 */
+  border: 1rpx solid #ffcc66;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  text-align: center;
+}
+
+.desktop-tip-text {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #cc9900;
+  margin-bottom: 20rpx;
+}
+
+.desktop-steps {
+  font-size: 26rpx;
+  color: #999;
+  line-height: 1.6;
+  text-align: left;
+  padding: 0 20rpx;
+}

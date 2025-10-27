@@ -1,0 +1,126 @@
+<!-- pages/premium/packages/packages.wxml -->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="back-icon" bindtap="goBack">‹</view>
+    <text class="header-title">选择套餐</text>
+  </view>
+
+  <!-- 套餐卡片容器 -->
+  <view class="packages-container">
+    
+    <!-- 基础包 -->
+    <view class="package-card {{selectedPackage === 'basic' ? 'card-active' : ''}}" 
+          data-id="basic" 
+          bindtap="selectPackage"
+          bindtouchstart="onCardTouchStart" 
+          bindtouchend="onCardTouchEnd">
+      <view class="package-header">
+        <text class="package-name">基础包</text>
+        <view class="price-section">
+          <text class="price-symbol">¥</text>
+          <text class="package-price">9.9</text>
+        </view>
+      </view>
+      
+      <view class="package-features">
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">10次AI分析</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">30天内有效</text>
+        </view>
+      </view>
+      
+      <button class="buy-btn {{selectedPackage === 'basic' ? 'btn-active' : ''}}" 
+              data-id="basic" 
+              catchtap="buyPackage">立即购买</button>
+    </view>
+
+    <!-- 热销包 -->
+    <view class="package-card {{selectedPackage === 'popular' ? 'card-active' : ''}} {{selectedPackage === '' ? 'recommended' : ''}}" 
+          data-id="popular" 
+          bindtap="selectPackage"
+          bindtouchstart="onCardTouchStart" 
+          bindtouchend="onCardTouchEnd">
+      <view class="recommend-badge">热销</view>
+      <view class="package-header">
+        <text class="package-name">热销包</text>
+        <view class="price-section">
+          <text class="price-symbol">¥</text>
+          <text class="package-price">29</text>
+        </view>
+      </view>
+      
+      <view class="package-features">
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">30次AI分析</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">60天内有效</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">高级报告</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">数据导出</text>
+        </view>
+      </view>
+      
+      <button class="buy-btn primary {{selectedPackage === 'popular' ? 'btn-active' : ''}}" 
+              data-id="popular" 
+              catchtap="buyPackage">立即购买</button>
+    </view>
+
+    <!-- 无限包 -->
+    <view class="package-card {{selectedPackage === 'unlimited' ? 'card-active' : ''}}" 
+          data-id="unlimited" 
+          bindtap="selectPackage"
+          bindtouchstart="onCardTouchStart" 
+          bindtouchend="onCardTouchEnd">
+      <view class="package-header">
+        <text class="package-name">无限包</text>
+        <view class="price-section">
+          <text class="price-symbol">¥</text>
+          <text class="package-price">99</text>
+        </view>
+      </view>
+      
+      <view class="package-features">
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">100次AI分析</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">90天内有效</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">高级报告</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">✓</text>
+          <text class="feature-text">数据导出</text>
+        </view>
+      </view>
+      
+      <button class="buy-btn {{selectedPackage === 'unlimited' ? 'btn-active' : ''}}" 
+              data-id="unlimited" 
+              catchtap="buyPackage">立即购买</button>
+    </view>
+
+  </view>
+
+  <!-- 底部说明 -->
+  <view class="footer-tips">
+    <text class="tip-text">💡 点击选择套餐，选中后高亮显示</text>
+    <text class="tip-text">🔒 支付安全由微信支付保障</text>
+  </view>
+</view>

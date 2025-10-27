@@ -1,0 +1,12 @@
+<!-- pages/orders/orders.wxml -->
+<view class="container">
+  <view class="title">我的服务记录</view>
+  <view class="order-item">
+    <view class="item-left">
+      <view class="item-title">新用户福利</view>
+      <view class="item-date">2025-09-24</view>
+    </view>
+    <view class="item-right">+ 3次</view>
+  </view>
+  <view class="empty-tip">暂无更多购买记录</view>
+</view>

@@ -1,0 +1,104 @@
+/* pages/payment/payment.wxss */
+.container {
+  min-height: 100vh;
+  background: #f5f5f7;
+  padding: 0;
+}
+
+/* 头部样式 */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 120rpx 30rpx 40rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #e5e5e7;
+}
+
+.back-btn {
+  font-size: 52rpx;
+  margin-right: 20rpx;
+  line-height: 1;
+  color: #007aff;
+}
+
+.title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+/* 商品卡片 */
+.product-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 48rpx;
+  margin: 40rpx 30rpx;
+  box-shadow: 0 2rpx 20rpx rgba(0,0,0,0.06);
+  border: 1rpx solid #e5e5e7;
+}
+
+.product-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 16rpx;
+}
+
+.product-desc {
+  font-size: 28rpx;
+  color: #424245;
+  margin-bottom: 32rpx;
+  line-height: 1.5;
+}
+
+.product-price {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #1d1d1f;
+  text-align: center;
+  border-top: 1rpx solid #f2f2f7;
+  padding-top: 32rpx;
+}
+
+/* 支付按钮 */
+.pay-button {
+  width: calc(100% - 60rpx);
+  height: 84rpx;
+  line-height: 84rpx;
+  border-radius: 12rpx;
+  background: #007aff;
+  color: white;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin: 60rpx 30rpx 30rpx;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.pay-button:active {
+  background: #0056cc;
+  transform: scale(0.98);
+}
+
+.btn-disabled {
+  background: #c6c6c8 !important;
+  opacity: 0.6;
+}
+
+/* 安全提示 */
+.safe-tips {
+  text-align: center;
+  margin-top: 40rpx;
+  padding: 0 30rpx;
+}
+
+.tip-icon {
+  margin-right: 12rpx;
+  font-size: 24rpx;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #86868b;
+  font-weight: 500;
+}

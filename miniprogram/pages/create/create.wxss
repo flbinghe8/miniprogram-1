@@ -1,0 +1,426 @@
+/* --- 页面通用样式 --- */
+.container {
+  padding: 40rpx;
+  background-color: #f8f9fa; /* 更柔和的背景色 */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* --- Header 区域样式 --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 10rpx;
+  margin-bottom: 40rpx;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* 移除 back-icon 相关样式 */
+.back-icon {
+  display: none; /* 完全隐藏箭头 */
+}
+
+.header .title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1c1c1e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  text-align: left; /* 确保左对齐 */
+  /* 添加这些属性确保完全左对齐 */
+  margin: 0;
+  padding: 0;
+}
+
+.header .credits {
+  font-size: 28rpx;
+  color: #8e8e93;
+  flex-shrink: 0;
+  margin-left: 20rpx;
+}
+
+/* --- 工作流选择卡片样式 --- */
+.workflow-selector .card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+.workflow-selector .card {
+  background-color: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+  padding: 50rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.workflow-selector .card:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+.workflow-selector .card-icon {
+  width: 100rpx;
+  height: 100rpx;
+  margin-bottom: 30rpx;
+  object-fit: contain;
+}
+.workflow-selector .card-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1c1c1e;
+  margin-bottom: 12rpx;
+}
+.workflow-selector .card-desc {
+  font-size: 26rpx;
+  color: #8e8e93;
+  line-height: 1.5;
+}
+
+/* --- 表单通用样式 --- */
+.form-item {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+.form-label {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.required {
+  color: #ff4d4f;
+  margin-left: 8rpx;
+}
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+  padding: 0;
+}
+.form-textarea.single-line {
+  min-height: 40rpx; /* 让它看起来像单行输入框 */
+  height: 40rpx;
+}
+.phcolor { /* placeholder 文本样式 */
+  color: #bbbbbb;
+  font-size: 30rpx;
+}
+
+/* ======================================================= */
+/* --- 广告分析特定样式 (已修复图标大小问题) --- */
+/* ======================================================= */
+.download-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 96rpx;
+background-color: #007aff; /* 主色调，非常醒目 */
+color: white;
+border-radius: 12rpx;
+font-size: 30rpx;
+margin-bottom: 30rpx; /* 和上传按钮之间留出间距 */
+border: none;
+}
+.download-icon {
+width: 40rpx;   /* 修正图标大小 */
+height: 40rpx;
+margin-right: 15rpx; /* 图标和文字的间距 */
+}
+.ads-form .upload-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 96rpx;
+background-color: #f0f8ff;
+border: 2rpx dashed #a0d9ff;
+border-radius: 12rpx;
+color: #1890ff;
+font-size: 30rpx;
+}
+.ads-form .upload-icon {
+width: 40rpx;
+height: 40rpx;
+margin-right: 15rpx;
+object-fit: contain;
+}
+.ads-form .template-tip {
+font-size: 26rpx;
+color: #999;
+text-align: center; /* 提示居中更美观 */
+margin-top: 20rpx;
+}
+.ads-form .download-link {
+color: #1890ff;
+}
+/* ======================================================= */
+/* --- 广告分析样式结束 --- */
+/* ======================================================= */
+
+/* --- 提交按钮 --- */
+.button-primary {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background-color: #007aff; /* iOS 风格蓝色 */
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 500;
+  border-radius: 20rpx;
+  margin-top: 40rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(0, 122, 255, 0.25);
+}
+.button-primary-hover {
+  background-color: #0056b3;
+  opacity: 0.9;
+}
+button[disabled] {
+  background-color: #cce4ff;
+  box-shadow: none;
+  color: #fff;
+}
+.form-hint {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 15rpx;
+  padding-left: 10rpx;
+}
+
+/* --- 等待提示样式 --- */
+.time-tip {
+font-size: 24rpx;
+color: #999;
+text-align: center;
+margin-top: 20rpx;
+padding: 20rpx;
+}
+
+/* 统一输入框样式 */
+.form-input, .form-textarea {
+font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
+font-size: 30rpx;
+color: #333;
+width: 100%;
+line-height: 1.6;
+}
+
+/* 文件信息显示 */
+.file-info {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #f8f9fa;
+padding: 20rpx;
+border-radius: 8rpx;
+margin-top: 20rpx;
+font-size: 28rpx;
+}
+
+.file-name {
+color: #333;
+flex: 1;
+}
+
+.clear-file {
+color: #ff4d4f;
+font-size: 26rpx;
+}
+
+.form-hint {
+font-size: 24rpx;
+color: #999;
+margin-top: 15rpx;
+padding-left: 10rpx;
+text-align: center; /* 添加这行实现居中 */
+}
+/* pages/create/create.wxss */
+/* pages/create/create.wxss 新增双提示框样式 */
+
+/* --- 1. 紫色 AI 谨慎提示框样式 --- */
+.ai_warning_box {
+display: flex;
+align-items: center;
+justify-content: center;
+
+/* 模仿截图的渐变紫色 */
+background: linear-gradient(90deg, #7b68ee, #9966cc);
+border-radius: 12rpx;
+
+padding: 24rpx 30rpx;
+
+/* 间距调整：位于 header 下方，与下方黄色框隔开 */
+margin: 30rpx auto 15rpx auto; 
+width: 90%; 
+}
+
+.ai_warning_emoji {
+font-size: 36rpx; 
+margin-right: 15rpx;
+line-height: 1;
+color: #ffffff;
+}
+
+.ai_warning_text {
+font-size: 28rpx;
+font-weight: 500;
+color: #ffffff; /* 白色文字 */
+}
+
+/* --- 2. 黄色/价值提示框样式 (form-ai-notice) --- */
+.form-ai-notice {
+display: flex;
+align-items: center;
+justify-content: center;
+
+/* 模仿截图的淡黄色背景和边框 */
+background-color: #fffaf0; 
+border: 1px solid #ffcc66; /* 淡橘色边框 */
+border-radius: 12rpx;
+padding: 5rpx 30rpx;
+
+/* 间距调整：位于紫色框下方，与下方表单内容隔开 */
+margin: 0 auto 40rpx auto; 
+width: 90%; 
+}
+
+.ai-notice-text {
+font-size: 28rpx;
+font-weight: 500;
+color: #cc9900; /* 淡橘黄色文字 */
+white-space: nowrap; 
+display: flex;
+align-items: center;  
+}
+
+/* 自定义弹窗样式 - 方案五：简约现代风 */
+.custom-dialog {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 9999;
+}
+
+.dialog-mask {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 80%;
+max-width: 600rpx;
+background: #ffffff;
+border-radius: 24rpx;
+padding: 50rpx 40rpx;
+text-align: center;
+box-sizing: border-box;
+box-shadow: 0 20rpx 80rpx rgba(0, 0, 0, 0.15);
+border: 1rpx solid #f0f0f0;
+}
+
+.dialog-icon {
+font-size: 80rpx;
+margin-bottom: 20rpx;
+}
+
+.dialog-title {
+font-size: 36rpx;
+font-weight: bold;
+margin-bottom: 20rpx;
+color: #333;
+}
+
+.dialog-desc {
+font-size: 28rpx;
+color: #666;
+margin-bottom: 40rpx;
+line-height: 1.5;
+}
+
+.phone-input {
+width: 100%;
+height: 80rpx;
+border: 2rpx solid #e8e8e8;
+border-radius: 12rpx;
+padding: 0 20rpx;
+margin-bottom: 40rpx;
+box-sizing: border-box;
+font-size: 28rpx;
+background: #fafafa;
+transition: all 0.3s;
+}
+
+.phone-input:focus {
+border-color: #007aff;
+background: white;
+box-shadow: 0 0 0 2rpx rgba(0, 122, 255, 0.1);
+}
+
+.action-buttons {
+display: flex;
+flex-direction: column;
+gap: 20rpx;
+}
+
+.confirm-btn, .cancel-btn {
+height: 60rpx;
+line-height: 60rpx;
+border-radius: 12rpx;
+font-size: rpx;
+border: none;
+text-align: center;
+padding: 32;
+font-weight: 400;
+transition: all 0.2s;
+}
+
+.confirm-btn {
+background: #007aff;
+color: white;
+box-shadow: 0 4rpx 16rpx rgba(0, 122, 255, 0.3);
+}
+
+.confirm-btn:active {
+transform: scale(0.98);
+box-shadow: 0 2rpx 8rpx rgba(0, 122, 255, 0.4);
+background: #0056d6;
+}
+
+.cancel-btn {
+background: #f5f5f5;
+color: #666;
+border: 1rpx solid #e8e8e8;
+}
+
+.cancel-btn:active {
+background: #e8e8e8;
+}

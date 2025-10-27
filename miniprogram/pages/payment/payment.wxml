@@ -1,0 +1,30 @@
+<!-- pages/payment/payment.wxml -->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">‹</view>
+    <text class="title">确认支付</text>
+  </view>
+
+  <!-- 商品信息 -->
+  <view class="product-card">
+    <view class="product-name">{{productInfo.name}}</view>
+    <view class="product-desc">{{productInfo.description}}</view>
+    <view class="product-price">￥{{productInfo.price}}</view>
+  </view>
+  
+  <!-- 支付按钮 -->
+  <button 
+    class="pay-button {{isLoading ? 'btn-disabled' : ''}}" 
+    bindtap="onPayButtonClick" 
+    disabled="{{isLoading}}"
+  >
+    {{isLoading ? '支付中...' : '立即支付'}}
+  </button>
+
+  <!-- 安全提示 -->
+  <view class="safe-tips">
+    <text class="tip-icon">🔒</text>
+    <text class="tip-text">支付安全由微信支付保障</text>
+  </view>
+</view>

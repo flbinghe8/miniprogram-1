@@ -1,0 +1,81 @@
+<!-- pages/title/title.wxml -->
+<view class="container">
+  
+  <view class="header">
+    <view class="header-left">
+      <!-- 移除箭头 -->
+      <!-- <view class="back-icon" bindtap="goBackToSelect">‹</view> -->
+      <view class="title">标题五点描述撰写</view>
+    </view>
+    <view class="credits">剩余额度：{{ userProfile.credits || '3次' }}</view>
+  </view>
+  
+  <view class="ai_warning_box">
+      <text class="ai_warning_emoji">🤖</text>
+      <text class="ai_warning_text">本服务提供AI生成内容，请谨慎参考</text>
+  </view>
+
+  <view class="form-ai-notice">
+      <text class="ai-notice-text">
+          💡 一键生成3套SEO/转化/平衡策略标题五点描述
+      </text>
+  </view>
+
+  <view class="title-form">
+      
+      <view class="form-item">
+          <view class="form-label">产品名称<text class="required">*</text></view>
+          <textarea class="form-textarea single-line" maxlength="100" placeholder-class="phcolor"
+              placeholder="例如：DJI Osmo Mobile 8 手机云台稳定器" 
+              bindinput="onInput" data-field="productName" value="{{productName}}" />
+      </view>
+
+      <view class="form-item">
+          <view class="form-label">核心卖点<text class="required">*</text></view> 
+          <textarea class="form-textarea" maxlength="5000" placeholder-class="phcolor"
+              placeholder="例如：三轴云台增稳/AI智能跟拍7.0/磁吸快拆设计（多个卖点请用逗号、顿号或换行分隔）"
+              bindinput="onInput" data-field="productFeatures" value="{{productFeatures}}" />
+      </view>
+
+      <view class="form-item">
+          <view class="form-label">核心关键词<text class="required">*</text></view>
+          <textarea class="form-textarea" maxlength="1000" placeholder-class="phcolor"
+              placeholder="例如：手机稳定器, 手机云台, 摄影配件（多个关键词请用逗号、顿号或换行分隔）"
+              bindinput="onInput" data-field="coreKeywords" value="{{coreKeywords}}" />
+      </view>
+
+      <view class="form-item">
+          <view class="form-label">目标用户与场景<text class="required">*</text></view>
+          <textarea class="form-textarea" maxlength="5000" placeholder-class="phcolor"
+              placeholder="例如：Vlog博主/旅行爱好者/年轻父母（多个用户请用逗号、顿号或换行分隔）"
+              bindinput="onInput" data-field="targetAudience" value="{{targetAudience}}" />
+      </view>
+      
+      <view class="form-item">
+          <view class="form-label">品牌名</view>
+          <input class="form-input" placeholder="例如：DJI" 
+              bindinput="onInput" data-field="brandName" value="{{brandName}}" />
+      </view>
+
+      <view class="form-item">
+          <view class="form-label">长尾关键词（辅助）</view>
+          <textarea class="form-textarea" maxlength="1000" placeholder-class="phcolor"
+              placeholder="例如：iphone稳定器, 磁吸手机云台, 手持稳定器专业版（可选填）"
+              bindinput="onInput" data-field="longTailKeywords" value="{{longTailKeywords}}" />
+      </view>
+
+      <view class="time-tip">
+          ⏱️ AI生成通常需要1分钟，请耐心等待
+      </view>
+
+      <view class="form-hint" wx:if="{{!productName || !productFeatures || !coreKeywords || !targetAudience}}">
+          请填写所有必填项（标*字段）
+      </view>
+
+      <button class="button-primary" hover-class="button-primary-hover"
+          bindtap="handleSubmit" loading="{{isLoading}}"
+          disabled="{{!productName || !productFeatures || !coreKeywords || !targetAudience}}">
+          立即生成
+      </button>
+  </view>
+</view>

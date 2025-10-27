@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/profile/profile",
+    "pages/title/title",
+    "pages/create/create",
+    "pages/result/result",
+    "pages/orders/orders",
+    "pages/orders/membership",
+    "pages/history/history",
+    "pages/guide/guide",
+    "pages/premium/packages/packages",
+    "pages/payment/payment",
+    "pages/paymentSuccess/paymentSuccess"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "途胜运营智能体",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#007aff",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/tab_home_normal.png",
+        "selectedIconPath": "images/tab_home_active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab_profile_normal.png",
+        "selectedIconPath": "images/tab_profile_active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
