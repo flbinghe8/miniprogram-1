@@ -1,0 +1,9 @@
+{
+  "name": "getuserquota",
+  "version": "1.0.0", 
+  "description": "获取用户额度详情",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

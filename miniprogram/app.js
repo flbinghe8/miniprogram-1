@@ -1,4 +1,4 @@
-// app.js (最终隐私合规优化版)
+// app.js - 完整修复版
 App({
   onLaunch: function () {
     // --------------------------------------------------------
@@ -25,33 +25,90 @@ App({
       console.log('✅ 云开发环境初始化成功！');
     }
 
-    // ----------------------------------------------------
-    // 【初始化用户数据】
-    // ----------------------------------------------------
-    this.initUserData();
+    // 🆕【核心修复】完善的登录状态管理
+    this.initLoginState();
   },
 
-  // 【初始化用户数据方法】
-  initUserData() {
-    try {
-      const userInfo = wx.getStorageSync('userInfo');
-      if (!userInfo) {
-        // 首次使用，初始化用户数据
-        const initialUserData = {
-          remainingCount: 3,
-          isRegistered: false,
-          phoneNumber: '',
-          isPremium: false,
-          firstUseTime: new Date().getTime()
-        };
-        wx.setStorageSync('userInfo', initialUserData);
-        console.log('✅ 用户数据初始化完成，剩余次数: 3');
-      } else {
-        console.log('✅ 用户数据已存在，剩余次数:', userInfo.remainingCount || 3);
-      }
-    } catch (error) {
-      console.error('初始化用户数据失败:', error);
+  onShow: function () {
+    // 🆕 冷启动兜底：检查session状态
+    this.checkSessionState();
+  },
+
+  // 🆕 新增：检查session状态
+  checkSessionState: function() {
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    if (!isLoggedIn) {
+      wx.checkSession({
+        success: () => {
+          console.log('✅ session有效，重新登录');
+          this.triggerWechatLogin();
+        },
+        fail: () => {
+          console.log('⚠️ session失效，需要重新登录');
+          this.triggerWechatLogin();
+        }
+      });
     }
+  },
+
+  // 🆕 修复：初始化登录状态
+  initLoginState: function() {
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    this.globalData.isLoggedIn = isLoggedIn || false;
+    console.log('🔐 初始化登录状态:', this.globalData.isLoggedIn);
+    
+    if (!this.globalData.isLoggedIn) {
+      this.triggerWechatLogin();
+    }
+  },
+
+  // 🆕【核心修复】新增微信登录方法
+  triggerWechatLogin: function() {
+    console.log('🔐 触发微信登录获取用户身份');
+    wx.login({
+      success: (res) => {
+        if (res.code) {
+          console.log('✅ 获取到登录code');
+          // 静默调用get_user_info创建用户记录
+          wx.cloud.callFunction({
+            name: 'get_user_info',
+            success: (cloudRes) => {
+              console.log('✅ 用户身份初始化成功');
+              if (cloudRes.result && cloudRes.result.success) {
+                // 🆕 关键修复：存储登录状态
+                wx.setStorageSync('isLoggedIn', true);
+                this.globalData.isLoggedIn = true;
+                this.globalData.userInfo = cloudRes.result.data;
+                console.log('✅ 登录状态已保存');
+              }
+            },
+            fail: (err) => {
+              console.error('❌ 用户初始化失败:', err);
+              wx.setStorageSync('isLoggedIn', false);
+              this.globalData.isLoggedIn = false;
+            }
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('❌ wx.login失败:', err);
+        wx.setStorageSync('isLoggedIn', false);
+        this.globalData.isLoggedIn = false;
+      }
+    });
+  },
+
+  // 🆕 新增：完整退出登录
+  realLogout: function() {
+    return new Promise((resolve) => {
+      wx.setStorageSync('isLoggedIn', false);
+      this.globalData.isLoggedIn = false;
+      this.globalData.userInfo = null;
+      // 清除缓存
+      wx.removeStorageSync('cachedUserCredits');
+      console.log('✅ 已完全退出登录');
+      resolve();
+    });
   },
 
   // 【✅ 核心方法：显示隐私协议弹窗】
@@ -75,7 +132,6 @@ App({
           });
         }
       },
-      // 🆕 优化：失败时也调用resolve避免阻塞
       fail: (err) => {
         console.error('隐私弹窗显示失败:', err);
         if (resolve && typeof resolve === 'function') {
@@ -88,22 +144,16 @@ App({
     });
   },
 
-  onShow: function (options) {
-    // 可以留空
-  },
-
   onHide: function () {
     // 可以留空
   },
 
   onError: function (msg) {
-    // 🆕 优化：添加全局错误监控
     console.error('App全局错误:', msg);
   },
 
-
-
   globalData: {
-    userInfo: null
+    userInfo: null,
+    isLoggedIn: false  // 🆕 新增全局登录状态
   }
 });

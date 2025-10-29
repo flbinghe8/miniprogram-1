@@ -1,13 +1,13 @@
-// pages/create/create.js (已集成灰度开关 + 埋点 + 次数扣减)
+// pages/create/create.js (完整修复版)
 Page({
   data: {
     // 核心状态
     workflowType: null,
     isLoading: false,
     remainingCount: 0,
-    isFeatureDisabled: false, // 🆕 灰度开关状态
+    isFeatureDisabled: false,
 
-    // 付费引导弹窗 - 默认false
+    // 付费引导弹窗
     showPremiumDialog: false,
     hasPhone: false,
     phoneNumber: '',
@@ -28,7 +28,6 @@ Page({
     waterproofRating: ''
   },
 
-  // 页面加载时，接收从首页传来的参数
   onLoad(options) {
     console.log('页面加载开始');
     this.setData({
@@ -44,13 +43,11 @@ Page({
     this.getRealUserCredits();
   },
 
-  // 🆕 优化：添加了标准的 goBack 方法
   goBack() {
     wx.navigateBack({
       delta: 1,
       fail: (err) => {
         console.log('返回失败，尝试其他方式:', err);
-        // 备用方案：跳转到首页
         wx.switchTab({
           url: '/pages/home/home'
         });
@@ -58,7 +55,65 @@ Page({
     });
   },
 
-  // 从后端获取真实用户次数 (🆕 已集成灰度开关)
+  // 🆕 修复：额度扣减后的实时更新
+  async updateCreditsDisplay() {
+    try {
+      const currentCount = this.data.remainingCount;
+      if (currentCount > 0) {
+        this.setData({
+          remainingCount: currentCount - 1
+        });
+      }
+      
+      const app = getApp();
+      if (app.globalData.userInfo) {
+        if (app.globalData.userInfo.remainingTrials > 0) {
+          app.globalData.userInfo.remainingTrials--;
+        }
+        app.globalData.userInfo.totalCredits = app.globalData.userInfo.remainingTrials + app.globalData.userInfo.paidCredits;
+      }
+      
+      const newCredits = this.data.remainingCount - 1;
+      let displayText = '';
+      if (newCredits > 0) {
+        displayText = '试用 ' + newCredits + ' 次';
+      } else {
+        displayText = '0 次 (请升级)';
+      }
+      wx.setStorageSync('cachedUserCredits', displayText);
+      
+      const pages = getCurrentPages();
+      const homePage = pages.find(page => page.route === 'pages/home/home');
+      if (homePage && homePage.getUserCreditSafe) {
+        homePage.getUserCreditSafe();
+      }
+      
+    } catch (error) {
+      console.error('更新额度显示失败:', error);
+    }
+  },
+
+  // 🆕 修复：统一的额度扣减方法
+  async deductUserCredits() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'consume_credit'
+      });
+      
+      console.log('✅ 次数扣减成功:', res);
+      
+      if (res.result && res.result.success) {
+        await this.updateCreditsDisplay();
+        return { success: true, data: res.result.data };
+      } else {
+        return { success: false, error: res.result.error };
+      }
+    } catch (error) {
+      console.error('❌ 次数扣减失败:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
   async getRealUserCredits() {
     try {
       const res = await wx.cloud.callFunction({
@@ -67,9 +122,6 @@ Page({
       const userData = res.result.data || {};
       console.log('后端用户数据:', userData);
 
-      // ------------------------------------
-      // 🆕 灰度开关检查
-      // ------------------------------------
       if (userData.featureOff === true) {
         this.setData({ 
           isFeatureDisabled: true, 
@@ -81,9 +133,8 @@ Page({
           content: '功能维护中，请稍后重试', 
           showCancel: false 
         });
-        return; // 终止后续逻辑
+        return;
       }
-      // ------------------------------------
 
       const remainingTrials = userData.remainingTrials || 0;
       const paidCredits = userData.paidCredits || 0;
@@ -92,7 +143,7 @@ Page({
       this.setData({
         remainingCount: totalCredits,
         hasPhone: !!userData.phoneNumber,
-        isFeatureDisabled: false // 确保功能开启
+        isFeatureDisabled: false
       });
       
       const app = getApp();
@@ -126,7 +177,6 @@ Page({
     }
   },
 
-  // 检查用户次数
   async checkUserCredits() {
     await this.getRealUserCredits();
     const { remainingCount } = this.data;
@@ -144,7 +194,6 @@ Page({
     }
   },
 
-  // 显示付费引导弹窗
   showPremiumGuide(hasPhone) {
     console.log('显示付费引导，hasPhone:', hasPhone);
     this.setData({
@@ -154,12 +203,10 @@ Page({
     });
   },
 
-  // 手机号输入
   onPhoneInput(e) {
     this.setData({ phoneNumber: e.detail.value });
   },
 
-  // 注册并跳转付费
   async registerAndGoToPay() {
     const { phoneNumber } = this.data;
     if (!phoneNumber) {
@@ -200,7 +247,6 @@ Page({
     }
   },
 
-  // 跳转付费页面
   goToPayPage() {
     console.log('跳转到套餐页面');
     this.setData({ showPremiumDialog: false });
@@ -217,7 +263,6 @@ Page({
     });
   },
 
-  // 关闭弹窗
   onCancelDialog() {
     this.setData({ 
       showPremiumDialog: false,
@@ -225,28 +270,21 @@ Page({
     });
   },
 
-  // 统一的提交前检查 (🆕 已集成埋点)
   async checkBeforeSubmit() {
     const checkResult = await this.checkUserCredits();
 
-    // ------------------------------------
-    // 🆕 优化：添加埋点 (Fire and Forget)
-    // ------------------------------------
     try {
       wx.cloud.callFunction({ 
         name: 'analytics', 
         data: { 
           event: 'check_credit', 
           hasCredit: checkResult.success,
-          workflow: this.data.workflowType // 额外记录是哪个功能触发的
+          workflow: this.data.workflowType
         } 
       });
-      // 注意：这里不需要 await，让它异步执行即可
-      // 我们不希望埋点失败时阻塞用户的核心流程
     } catch (e) {
-      console.error('Analytics call failed', e); // 仅记录错误，不打断用户
+      console.error('Analytics call failed', e);
     }
-    // ------------------------------------
     
     if (!checkResult.success) {
       this.showPremiumGuide(checkResult.hasPhone);
@@ -256,24 +294,6 @@ Page({
     return true;
   },
 
-  // 🆕 核心修复：扣减用户次数
-  async deductUserCredits() {
-    try {
-      const res = await wx.cloud.callFunction({
-        name: 'update_user_credits',
-        data: {
-          type: 'use'
-        }
-      });
-      console.log('✅ 次数扣减成功:', res);
-      return { success: true };
-    } catch (error) {
-      console.error('❌ 次数扣减失败:', error);
-      return { success: false, error: error.message };
-    }
-  },
-
-  // 优化：统一的错误处理
   handleApiError(error) {
     console.error('API错误:', error);
     if (error.errMsg && error.errMsg.includes('network')) {
@@ -285,7 +305,6 @@ Page({
     }
   },
 
-  // 在页面卸载时清理大数据
   onUnload() {
     this.setData({
       rawData: '',
@@ -299,7 +318,6 @@ Page({
     console.log('页面卸载，清理数据完成');
   },
 
-  // 在页面隐藏时也可以清理
   onHide() {
     this.setData({
       isLoading: false,
@@ -307,14 +325,12 @@ Page({
     });
   },
 
-  // 返回功能选择
   goBackToSelect() {
     wx.switchTab({
       url: '/pages/home/home'
     });
   },
 
-  // --- SOP 输入处理 ---
   onProductNameInput(e) {
     this.setData({ productName: e.detail.value });
   },
@@ -347,9 +363,8 @@ Page({
     this.setData({ waterproofRating: e.detail.value });
   },
 
-  // --- SOP 逻辑 --- (🆕 已集成灰度开关 + 次数扣减)
+  // 🆕 修复：SOP提交逻辑
   async handleSopSubmit(e) {
-    // 🆕 灰度开关检查
     if (this.data.isFeatureDisabled) {
       wx.showModal({ title: '提示', content: '功能维护中，请稍后重试', showCancel: false });
       return;
@@ -439,11 +454,11 @@ Page({
       success: async (res) => {
         clearTimeout(loadingTimeout);
         
-        // 🆕 核心修复：AI调用成功后扣减次数
+        // 🆕 使用新的额度扣减方法
         const deductResult = await this.deductUserCredits();
         if (!deductResult.success) {
           safeHideLoading();
-          wx.showToast({ title: '次数扣减失败，请重试', icon: 'none' });
+          wx.showToast({ title: '次数扣减失败: ' + deductResult.error, icon: 'none' });
           return;
         }
         
@@ -463,7 +478,7 @@ Page({
             }
             
             wx.navigateTo({
-               url: `/pages/result/result?report=${encodeURIComponent(finalReportContent)}&type=sop`
+               url: '/pages/result/result?report=' + encodeURIComponent(finalReportContent) + '&type=sop'
             });
             return;
           }
@@ -570,8 +585,8 @@ Page({
     return true;
   },
 
+  // 🆕 修复：广告分析扣减逻辑
   async startAnalysis() {
-    // 🆕 灰度开关检查
     if (this.data.isFeatureDisabled) {
       wx.showModal({ title: '提示', content: '功能维护中，请稍后重试', showCancel: false });
       return;
@@ -632,11 +647,11 @@ Page({
       success: async (res) => {
         clearTimeout(loadingTimeout);
         
-        // 🆕 核心修复：AI调用成功后扣减次数
+        // 🆕 使用新的额度扣减方法
         const deductResult = await this.deductUserCredits();
         if (!deductResult.success) {
           safeHideLoading();
-          wx.showToast({ title: '次数扣减失败，请重试', icon: 'none' });
+          wx.showToast({ title: '次数扣减失败: ' + deductResult.error, icon: 'none' });
           return;
         }
         
@@ -644,7 +659,7 @@ Page({
         
         if (res.result && res.result.success && res.result.result && res.result.result.final_report) {
           wx.navigateTo({ 
-            url: `/pages/result/result?report=${encodeURIComponent(res.result.result.final_report)}&type=ads` 
+            url: '/pages/result/result?report=' + encodeURIComponent(res.result.result.final_report) + '&type=ads' 
           });
         } else {
           const result = res.result || {};
@@ -654,7 +669,7 @@ Page({
           }
           wx.showModal({
             title: '分析失败',
-            content: `原因: ${errorDetails}`,
+            content: '原因: ' + errorDetails,
             showCancel: false,
             confirmText: '我明白了'
           });

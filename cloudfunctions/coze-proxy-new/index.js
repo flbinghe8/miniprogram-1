@@ -233,7 +233,7 @@ exports.main = async (event, context) => {
 };
 
 // ----------------------------------------------------
-// 【增强的额度扣减函数 - 包含用户自动创建】
+// 【修复的额度扣减函数 - 统一额度计算逻辑】
 // ----------------------------------------------------
 async function deductCredit(userId) {
   try {
@@ -249,7 +249,10 @@ async function deductCredit(userId) {
       
       const newUser = {
         _id: userId,
-        credits: INITIAL_CREDITS - 1, // 直接扣除本次使用的额度
+        trialUsed: 1, // 直接记录已使用1次试用
+        paidCredits: 0,
+        remainingTrials: 2, // 剩余试用次数
+        totalCredits: 2, // 总剩余次数
         isMember: false,
         createdTime: db.serverDate(),
         updatedTime: db.serverDate(),
@@ -257,32 +260,53 @@ async function deductCredit(userId) {
       };
       
       await db.collection(USER_COLLECTION).add(newUser);
-      console.log('✅ 新用户创建成功，当前额度:', INITIAL_CREDITS - 1);
+      console.log('✅ 新用户创建成功，当前额度:', 2);
       return { success: true, errorMessage: '' };
     }
     
-    // 检查当前额度
-    const currentCredits = userRes.data.credits;
-    console.log('💳 用户当前额度:', currentCredits);
+    // 【核心修复】统一额度计算逻辑
+    const userData = userRes.data;
+    const remainingTrials = Math.max(0, 3 - (userData.trialUsed || 0));
+    const currentPaidCredits = userData.paidCredits || 0;
+    const totalCredits = remainingTrials + currentPaidCredits;
     
-    if (currentCredits <= 0) {
-      console.log('❌ 用户额度不足，当前额度:', currentCredits);
+    console.log('💳 用户当前额度计算:', {
+      trialUsed: userData.trialUsed || 0,
+      remainingTrials: remainingTrials,
+      paidCredits: currentPaidCredits,
+      totalCredits: totalCredits
+    });
+    
+    if (totalCredits <= 0) {
+      console.log('❌ 用户额度不足，当前额度:', totalCredits);
       return { 
         success: false, 
-        errorMessage: userRes.data.isMember ? "会员额度已用完，请续费。" : "免费额度已用完。" 
+        errorMessage: userData.isMember ? "会员额度已用完，请续费。" : "免费额度已用完。" 
       };
     }
     
-    // 额度充足，进行扣减
+    // 额度充足，进行扣减 - 优先扣减试用次数
+    let updateData = {
+      updatedTime: db.serverDate(),
+    };
+    
+    if (remainingTrials > 0) {
+      // 使用试用次数
+      updateData.trialUsed = (userData.trialUsed || 0) + 1;
+      console.log(`📝 使用1次试用额度，剩余试用: ${remainingTrials - 1}`);
+    } else {
+      // 使用付费次数
+      updateData.paidCredits = currentPaidCredits - 1;
+      console.log(`📝 使用1次付费额度，剩余付费: ${currentPaidCredits - 1}`);
+    }
+    
+    // 更新用户数据
     const updateResult = await db.collection(USER_COLLECTION).doc(userId).update({
-      data: {
-        credits: _.inc(-1),
-        updatedTime: db.serverDate(),
-      }
+      data: updateData
     });
 
     console.log('📊 额度更新结果:', updateResult);
-    console.log('✅ 额度扣减成功，新额度:', currentCredits - 1);
+    console.log('✅ 额度扣减成功，新额度:', totalCredits - 1);
     return { success: true, errorMessage: '' };
     
   } catch (e) {
@@ -295,16 +319,40 @@ async function deductCredit(userId) {
 }
 
 // ----------------------------------------------------
-// 【额度回滚函数】
+// 【修复的额度回滚函数】
 // ----------------------------------------------------
 async function rollbackCredit(userId) {
   try {
     console.log('🔄 开始回滚额度，用户:', userId);
+    
+    // 先获取用户当前数据
+    const userRes = await db.collection(USER_COLLECTION).doc(userId).get();
+    const userData = userRes.data;
+    
+    if (!userData) {
+      console.log('❌ 用户不存在，无法回滚');
+      return;
+    }
+    
+    let updateData = {
+      updatedTime: db.serverDate()
+    };
+    
+    // 判断回滚试用次数还是付费次数
+    const trialUsed = userData.trialUsed || 0;
+    if (trialUsed > 0) {
+      // 回滚试用次数
+      updateData.trialUsed = trialUsed - 1;
+      console.log('🔄 回滚1次试用额度');
+    } else {
+      // 回滚付费次数
+      const paidCredits = userData.paidCredits || 0;
+      updateData.paidCredits = paidCredits + 1;
+      console.log('🔄 回滚1次付费额度');
+    }
+    
     const result = await db.collection(USER_COLLECTION).doc(userId).update({
-      data: { 
-        credits: _.inc(1), 
-        updatedTime: db.serverDate() 
-      }
+      data: updateData
     });
     console.log('✅ 额度回滚成功，更新结果:', result);
   } catch (e) {

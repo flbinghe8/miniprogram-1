@@ -40,6 +40,21 @@ Page({
         if (!res.result || !res.result.data || !res.result.data.openid) {
           wx.showToast({ title: '请先登录', icon: 'none' });
           this.setData({ isLoading: false });
+          // 🆕 添加跳转登录提示
+          setTimeout(() => {
+            wx.showModal({
+              title: '请先登录',
+              content: '需要登录后才能购买套餐，请先去个人中心登录',
+              confirmText: '去登录',
+              success: (modalRes) => {
+                if (modalRes.confirm) {
+                  wx.switchTab({
+                    url: '/pages/profile/profile'
+                  });
+                }
+              }
+            });
+          }, 500);
           return;
         }
         // ✅ 2. 已登录 → 请求支付参数

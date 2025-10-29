@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
     const userRes = await db.collection(USER_COLLECTION).doc(userId).get();
     let userData = userRes.data;
     
-    // 🆕 智能处理新旧数据格式
+    // 🆕【核心修复】智能处理新旧数据格式
     let trialUsed = 0;
     let paidCredits = 0;
     let phoneNumber = '';
@@ -56,14 +56,16 @@ exports.main = async (event, context) => {
     };
 
   } catch (e) {
-    // 用户记录不存在 - 创建新用户
+    // 🆕【核心修复】用户记录不存在 - 创建新用户
     if (e.errCode === 10002) {
+      console.log('🆕 创建新用户，OPENID:', userId);
+      
       const newUserProfile = {
-        _id: userId,
+        _id: userId, // 🆕 关键：使用OPENID作为_id
         trialUsed: 0,
         paidCredits: 0,
         phoneNumber: '',
-        credits: DEFAULT_TRIALS,
+        credits: DEFAULT_TRIALS, // 🆕 关键：初始3次
         isMember: false,
         createdTime: db.serverDate(),
         updatedTime: db.serverDate()
@@ -71,10 +73,12 @@ exports.main = async (event, context) => {
       
       await db.collection(USER_COLLECTION).add({ data: newUserProfile });
       
+      console.log('✅ 新用户创建成功，分配3次试用');
+      
       return {
         success: true,
         data: {
-          openid: userId,          // ✅ 新增
+          openid: userId,
           trialUsed: 0,
           remainingTrials: DEFAULT_TRIALS,
           paidCredits: 0,
