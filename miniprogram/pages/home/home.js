@@ -1,92 +1,98 @@
-// pages/home/home.js - 完整修复版
+const UserPermission = require('../../utils/userPermission');
+
 Page({
   data: {
     showTimeTip: false,
     userCredits: '加载中...',
     isVip: false,
-    isCreditsLoaded: false
+    isCreditsLoaded: false,
+    userType: 'guest',
+    userInfo: null
   },
 
   onLoad: function () {
-    console.log('首页加载');
-    // 🆕 添加本地缓存兜底
-    const cachedCredits = wx.getStorageSync('cachedUserCredits');
-    if (cachedCredits) {
-      this.setData({ userCredits: cachedCredits });
-    }
+    // ✅ 核心修复：显式绑定所有函数
+    this.handleStart = this.handleStart.bind(this);
+    this.handleWechatLogin = this.handleWechatLogin.bind(this);
+    this.checkUserPermission = this.checkUserPermission.bind(this); 
     
-    this.getUserCreditSafe();
+    this.initUserState();
   },
 
   onShow: function () {
-    this.getUserCreditSafe();
+    this.initUserState();
+  },
+
+  // ❌ 删除重复的 onShow
+
+  initUserState: function() {
+    const app = getApp();
+    if (app.globalData.isLoggedIn) {
+      this.getUserCreditSafe();
+    } else {
+      const guestData = app.globalData.guestState;
+      this.setData({
+        userCredits: UserPermission.getCreditsDisplay(guestData),
+        isVip: false,
+        isCreditsLoaded: true,
+        userType: guestData.userType,
+        userInfo: guestData
+      });
+    }
   },
 
   getUserCreditSafe: function () {
+    const app = getApp();
+    if (!app.globalData.isLoggedIn) {
+      const guestData = app.globalData.guestState;
+      this.setData({
+        userCredits: UserPermission.getCreditsDisplay(guestData),
+        isCreditsLoaded: true,
+        userType: guestData.userType,
+        userInfo: guestData
+      });
+      return;
+    }
+  
     wx.cloud.callFunction({
       name: 'get_user_info',
       data: {},
       success: (res) => {
-        console.log('✅ 云函数调用成功:', res);
         if (res.result && res.result.success) {
-          this.updateUserDisplay(res.result.data);
+          const userData = res.result.data; // 直接用云函数返回的数据
+          this.updateUserDisplay(userData);
         } else {
-          this.setData({
-            userCredits: '获取失败',
-            isCreditsLoaded: true
-          });
+          this.setData({ userCredits: '获取失败', isCreditsLoaded: true });
         }
       },
       fail: (err) => {
-        console.log('⚠️ 云函数调用失败:', err);
-        this.setData({
-          userCredits: '网络错误', 
-          isCreditsLoaded: true
-        });
+        this.setData({ userCredits: '网络错误', isCreditsLoaded: true });
       }
     });
   },
 
-  // 🆕【核心修复】修正额度显示逻辑
   updateUserDisplay: function (userData) {
-    if (!userData) return;
-    
-    let creditsDisplay = '';
-    let isVip = userData.isMember && userData.expireDate && new Date(userData.expireDate) > new Date();
-
-    if (isVip) {
-      creditsDisplay = '会员 (无限)';
-    } else {
-      const remainingTrials = userData.remainingTrials || 0;
-      const paidCredits = userData.paidCredits || 0;
-      
-      // 🆕 关键修复：正确的显示顺序
-      if (remainingTrials > 0 && paidCredits > 0) {
-        creditsDisplay = '试用 ' + remainingTrials + ' 次 | 付费 ' + paidCredits + ' 次';
-      } else if (remainingTrials > 0) {
-        creditsDisplay = '试用 ' + remainingTrials + ' 次';  // ✅ 新用户会显示这里
-      } else if (paidCredits > 0) {
-        creditsDisplay = '付费 ' + paidCredits + ' 次';
-      } else {
-        creditsDisplay = '0 次 (请升级)';
-      }
-    }
-
     this.setData({
-      userCredits: creditsDisplay,
-      isVip: isVip,
-      isCreditsLoaded: true
+      userCredits: UserPermission.getCreditsDisplay(userData),
+      isVip: userData.isMember || false,
+      isCreditsLoaded: true,
+      userType: userData.userType,
+      userInfo: userData
     });
-    
-    // 🆕 缓存额度信息
-    wx.setStorageSync('cachedUserCredits', creditsDisplay);
   },
 
-  // 🆕 您原有的所有其他方法完全保持不变
   handleStart: function (e) {
     const workflowType = e.currentTarget.dataset.type;
-    let targetPath = '';
+    if (!this.checkUserPermission(workflowType)) {
+      return;
+    }
+    
+    this.navigateToWorkflow(workflowType);
+  },
 
+  navigateToWorkflow: function(workflowType) {
+    this.setData({ showTimeTip: workflowType === 'sop' });
+    let targetPath = '';
     switch (workflowType) {
       case 'sop':
       case 'ads':
@@ -96,21 +102,94 @@ Page({
         targetPath = '/pages/title/title';
         break;
       default:
-        wx.showToast({
-          title: '该功能暂不可用',
-          icon: 'none'
-        });
+        wx.showToast({ title: '该功能暂不可用', icon: 'none' });
         return;
     }
+    if (targetPath) wx.navigateTo({ url: targetPath });
+  },
 
-    this.setData({
-      showTimeTip: workflowType === 'sop'
-    });
-
-    if (targetPath) {
-      wx.navigateTo({
-        url: targetPath
-      });
+  checkUserPermission: function(workflowType) {
+    const userData = this.data.userInfo;
+    if (!userData) {
+      console.log('❌ 用户数据未加载');
+      return false;
     }
+    
+    if (userData.isGuest || userData.userType === 'guest') {
+      const remainingTrials = userData.remainingTrials || 0;
+      if (remainingTrials <= 0) {
+        this.showLoginModal('游客体验次数已用完，登录可获得更多试用');
+        return false;
+      }
+      return true;
+    } else {
+      const totalCredits = userData.totalCredits || 0;
+      if (totalCredits <= 0) {
+        wx.showModal({
+          title: '额度不足',
+          content: '您的使用次数已用完，请购买套餐继续使用',
+          confirmText: '购买套餐',
+          cancelText: '稍后再说',
+          success: (res) => {
+            if (res.confirm) wx.navigateTo({ url: '/pages/premium/packages/packages' });
+          }
+        });
+        return false;
+      }
+      return true;
+    }
+  },
+
+  showLoginModal: function(message) {
+    wx.showModal({
+      title: '提示',
+      content: message || '请先登录以使用完整功能',
+      confirmText: '立即登录',
+      cancelText: '稍后',
+      success: (res) => {
+        if (res.confirm) this.handleWechatLogin();
+      }
+    });
+  },
+
+  handleWechatLogin: function() {
+    console.log('🟡 用户点击微信登录');
+    const app = getApp();
+    
+    wx.showLoading({ title: '登录中...', mask: true });
+
+    const timer = setTimeout(() => {
+      wx.hideLoading();
+      wx.showModal({
+        title: '登录超时',
+        content: '网络连接较慢，请检查网络后重试',
+        confirmText: '重试',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) this.handleWechatLogin();
+        }
+      });
+    }, 8000);
+
+    app.triggerWechatLogin(
+      (userData) => {
+        clearTimeout(timer);
+        wx.hideLoading();
+        
+        app.handleUserRegister((mergedData) => {
+          this.setData({ 
+            userInfo: mergedData,
+            userCredits: UserPermission.getCreditsDisplay(mergedData)
+          });
+          
+          wx.showToast({ title: '登录成功', icon: 'success', duration: 2000 });
+        });
+      },
+      () => {
+        clearTimeout(timer);
+        wx.hideLoading();
+        wx.showToast({ title: '登录失败，请重试', icon: 'none', duration: 2000 });
+      }
+    );
   }
 });

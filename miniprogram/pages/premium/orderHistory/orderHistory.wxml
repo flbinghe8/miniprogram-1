@@ -1,0 +1,51 @@
+<!-- pages/premium/orderHistory/orderHistory.wxml -->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="back-icon" bindtap="goBack">‹</view>
+    <text class="header-title">开通记录</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{isLoading}}" class="loading-section">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!isLoading && isEmpty}}" class="empty-section">
+    <image class="empty-icon" src="/images/empty-order.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无开通记录</text>
+    <text class="empty-desc">购买套餐后将会显示在这里</text>
+    <button class="go-buy-btn" bindtap="goToPackages">去购买套餐</button>
+  </view>
+
+  <!-- 订单列表 -->
+  <view wx:if="{{!isLoading && !isEmpty}}" class="order-list">
+    <view class="order-item" wx:for="{{orderList}}" wx:key="id">
+      <view class="order-header">
+        <text class="package-name">{{item.packageName}}</text>
+        <text class="order-status {{item.status}}">{{item.status === 'completed' ? '已完成' : '进行中'}}</text>
+      </view>
+      
+      <view class="order-details">
+        <view class="detail-row">
+          <text class="detail-label">购买时间</text>
+          <text class="detail-value">{{item.createTime}}</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">获得次数</text>
+          <text class="detail-value">{{item.credits}}次</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">有效期至</text>
+          <text class="detail-value">{{item.expireTime}}</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">支付金额</text>
+          <text class="detail-value price">¥{{item.amount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

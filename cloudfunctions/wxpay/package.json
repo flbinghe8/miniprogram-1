@@ -1,8 +1,14 @@
 {
-  "name": "wxpay",
+  "name": "wxpay", 
   "version": "1.0.0",
+  "description": "微信支付回调处理",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "wx-server-sdk": "~3.0.0"
+    "wx-server-sdk": "~2.6.3"
   }
 }

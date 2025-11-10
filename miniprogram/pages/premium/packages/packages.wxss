@@ -1,4 +1,4 @@
-/* pages/premium/packages/packages.wxss - 方案一 */
+/* pages/premium/packages/packages.wxss - 正式版 */
 .container {
   min-height: 100vh;
   background: #f5f5f7;
@@ -24,6 +24,20 @@
   font-size: 34rpx;
   font-weight: 600;
   color: #1d1d1f;
+}
+
+.login-notice {
+  background: #fff8e6;
+  padding: 20rpx 30rpx;
+  border-left: 8rpx solid #ffc107;
+  margin: 0 30rpx 20rpx;
+  border-radius: 8rpx;
+}
+
+.notice-text {
+  font-size: 26rpx;
+  color: #e6a700;
+  font-weight: 500;
 }
 
 .packages-container {

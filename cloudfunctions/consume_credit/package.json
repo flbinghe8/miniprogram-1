@@ -1,7 +1,7 @@
 {
   "name": "consume_credit",
   "version": "1.0.0",
-  "description": "用户额度扣减云函数",
+  "description": "用户额度消费服务",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

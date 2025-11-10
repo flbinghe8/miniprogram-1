@@ -1,0 +1,9 @@
+{
+  "name": "merge_guest_data",
+  "version": "1.0.0",
+  "description": "合并游客数据到用户账户",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

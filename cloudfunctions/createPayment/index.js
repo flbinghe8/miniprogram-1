@@ -9,7 +9,7 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const CONFIG = {
   appid: 'wx1e14111178d271d8',
   mch_id: '1730566892',
-  key: 'Wx2024PhyK7y1234567890AbcdEfGhIj',
+  key: 'Wx2026PhyK1h1g34567890AbcdEfGhus',
   notify_url: 'https://www.weixin.qq.com'
 }
 

@@ -1,9 +1,14 @@
-<!-- pages/premium/packages/packages.wxml -->
+<!-- pages/premium/packages/packages.wxml - 正式版 -->
 <view class="container">
   <!-- 头部 -->
   <view class="header">
     <view class="back-icon" bindtap="goBack">‹</view>
     <text class="header-title">选择套餐</text>
+  </view>
+
+  <!-- 未登录提示条 -->
+  <view wx:if="{{!isLoggedIn}}" class="login-notice">
+    <text class="notice-text">🔐 登录后即可购买套餐</text>
   </view>
 
   <!-- 套餐卡片容器 -->

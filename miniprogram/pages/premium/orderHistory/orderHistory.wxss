@@ -1,0 +1,165 @@
+/* pages/premium/orderHistory/orderHistory.wxss */
+.container {
+  min-height: 100vh;
+  background: #f5f5f7;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 120rpx 30rpx 40rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #e5e5e7;
+}
+
+.back-icon {
+  font-size: 52rpx;
+  margin-right: 20rpx;
+  line-height: 1;
+  color: #0066cc;
+}
+
+.header-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+/* 加载状态 */
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #e5e5e7;
+  border-top: 4rpx solid #007aff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #86868b;
+}
+
+/* 空状态 */
+.empty-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 30rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 40rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #8e8e93;
+  margin-bottom: 16rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #c7c7cc;
+  margin-bottom: 60rpx;
+}
+
+.go-buy-btn {
+  background: #007aff;
+  color: white;
+  border-radius: 12rpx;
+  padding: 0 60rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+/* 订单列表 */
+.order-list {
+  padding: 30rpx;
+}
+
+.order-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f2f2f7;
+}
+
+.package-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.order-status {
+  font-size: 24rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-weight: 500;
+}
+
+.order-status.completed {
+  background: #e8f5e8;
+  color: #34c759;
+}
+
+.order-status.pending {
+  background: #fff8e6;
+  color: #ff9500;
+}
+
+.order-details {
+  space-y: 16rpx;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.detail-label {
+  font-size: 26rpx;
+  color: #8e8e93;
+}
+
+.detail-value {
+  font-size: 26rpx;
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+.detail-value.price {
+  color: #ff3b30;
+  font-weight: 600;
+}

@@ -1,5 +1,8 @@
 {
   "permissions": {
-    "openapi": []
+    "openapi": [
+      "wxacode.get",
+      "security.msgSecCheck"
+    ]
   }
 }

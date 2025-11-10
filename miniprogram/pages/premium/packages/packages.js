@@ -1,23 +1,59 @@
-// pages/premium/packages/packages.js - 添加登录检查
+// pages/premium/packages/packages.js - 正式版
 Page({
   data: {
     selectedPackage: '',
-    touchPackage: ''
+    touchPackage: '',
+    isLoggedIn: false
   },
 
   onLoad: function () {
-    console.log('套餐页面加载');
-    
-    // 🆕 登录守门员
+    console.log('🎯 套餐页面加载');
+    this.checkLoginState();
+  },
+
+  onShow: function() {
+    console.log('🔄 套餐页面显示');
+    this.checkLoginState();
+  },
+
+  checkLoginState: function() {
     const app = getApp();
-    if (!app.globalData.isLoggedIn) {
+    const storageLogin = wx.getStorageSync('isLoggedIn');
+    const globalLogin = app.globalData.isLoggedIn;
+    const isLoggedIn = storageLogin || globalLogin;
+    
+    this.setData({ 
+      isLoggedIn: isLoggedIn
+    });
+  },
+
+  selectPackage: function (e) {
+    const packageId = e.currentTarget.dataset.id;
+    this.setData({ selectedPackage: packageId });
+  },
+
+  buyPackage: function (e) {
+    const packageId = e.currentTarget.dataset.id;
+    
+    if (!packageId) {
+      wx.showToast({ title: '系统错误', icon: 'none' });
+      return;
+    }
+    
+    // 检查登录状态
+    const app = getApp();
+    const storageLogin = wx.getStorageSync('isLoggedIn');
+    const globalLogin = app.globalData.isLoggedIn;
+    const isLoggedIn = storageLogin || globalLogin;
+    
+    if (!isLoggedIn) {
       wx.showModal({
         title: '请先登录',
         content: '购买套餐需要先登录账号',
-        showCancel: false,
+        confirmText: '立即登录',
+        cancelText: '稍后再说',
         success: (res) => {
           if (res.confirm) {
-            // 跳转到个人中心页
             wx.switchTab({
               url: '/pages/profile/profile'
             });
@@ -26,17 +62,23 @@ Page({
       });
       return;
     }
-    
-    // 已登录，正常加载
-    console.log('✅ 用户已登录，显示套餐页面');
+
+    // 跳转到支付页面
+    const targetUrl = '/pages/payment/payment?packageType=' + packageId;
+    wx.navigateTo({
+      url: targetUrl,
+      fail: (err) => {
+        wx.showModal({
+          title: '跳转失败',
+          content: '无法打开支付页面，请稍后重试',
+          showCancel: false
+        });
+      }
+    });
   },
 
   goBack: function () {
     wx.navigateBack();
-  },
-
-  selectPackage: function (e) {
-    this.setData({ selectedPackage: e.currentTarget.dataset.id });
   },
 
   onCardTouchStart: function (e) {
@@ -45,13 +87,5 @@ Page({
 
   onCardTouchEnd: function () {
     this.setData({ touchPackage: '' });
-  },
-
-  buyPackage: function (e) {
-    console.log('>>> buyPackage 被点击', e.currentTarget.dataset.id);
-    const packageId = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: '/pages/payment/payment?packageType=' + packageId
-    });
   }
 });

@@ -2,7 +2,7 @@
 <view wx:if="{{showLoginButton}}" class="login-section">
   <view class="login-card">
     <text class="login-title">未登录</text>
-    <text class="login-desc">登录后享受3次免费试用</text>
+    <text class="login-desc">{{userProfile.packageInfo}}</text>
     <button class="login-button" bindtap="handleLogin">微信一键登录</button>
   </view>
 </view>
@@ -73,7 +73,7 @@
     <!-- 核心额度信息 -->
     <view class="quota-card">
       <view class="quota-main">
-        <text class="quota-count">{{quotaData.availableTimes}}</text>
+        <text class="quota-count">{{quotaData.totalCredits || 0}}</text>
         <text class="quota-unit">次</text>
       </view>
       <text class="quota-desc">剩余总次数</text>
@@ -81,42 +81,41 @@
     
     <!-- 额度详情 -->
     <view class="quota-details">
+      <!-- ✅ 修复：新增统一显示 -->
+      <view class="detail-item">
+        <text class="detail-label">当前状态</text>
+        <text class="detail-value">{{quotaData.displayText}}</text>
+      </view>
       <view class="detail-item">
         <text class="detail-label">试用剩余</text>
-        <text class="detail-value">{{quotaData.trialRemaining}}/{{quotaData.totalTrials}}次</text>
+        <text class="detail-value">{{quotaData.remainingTrials || 0}}次</text>
       </view>
       <view class="detail-item">
         <text class="detail-label">付费剩余</text>
-        <text class="detail-value">{{quotaData.paidRemaining}}次</text>
+        <text class="detail-value">{{quotaData.paidCredits || 0}}次</text>
       </view>
       <view class="detail-item">
         <text class="detail-label">已用次数</text>
-        <text class="detail-value">{{quotaData.usedTimes}}次</text>
-      </view>
-      <view class="detail-item" wx:if="{{quotaData.isMember}}">
-        <text class="detail-label">会员状态</text>
-        <text class="detail-value member">剩余{{quotaData.daysRemaining}}天</text>
+        <text class="detail-value">{{quotaData.trialUsed || 0}}次</text>
       </view>
       <view class="detail-item">
         <text class="detail-label">套餐类型</text>
-        <text class="detail-value">{{quotaData.packageType}}</text>
+        <text class="detail-value">{{quotaData.packageType || '试用套餐'}}</text>
       </view>
-    </view>
-    
-    <!-- 最近使用记录 -->
-    <view class="recent-records" wx:if="{{quotaData.recentRecords && quotaData.recentRecords.length > 0}}">
-      <text class="records-title">最近使用记录</text>
-      <view class="record-list">
-        <view class="record-item" wx:for="{{quotaData.recentRecords}}" wx:for-item="record" wx:key="index">
-          <text class="record-action">{{record.action}}</text>
-          <text class="record-date">{{record.date}}</text>
-        </view>
+      <view class="detail-item" wx:if="{{quotaData.isMember}}">
+        <text class="detail-label">会员状态</text>
+        <text class="detail-value member">有效</text>
       </view>
     </view>
     
     <!-- 空状态 -->
-    <view class="empty-records" wx:if="{{!quotaData.recentRecords || quotaData.recentRecords.length === 0}}">
+    <view class="empty-records">
       <text>暂无使用记录</text>
+    </view>
+    
+    <!-- 底部按钮 -->
+    <view class="popup-footer">
+      <button class="btn-confirm" bindtap="onCloseQuotaPopup">确定</button>
     </view>
     
   </view>

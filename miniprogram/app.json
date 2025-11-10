@@ -11,7 +11,8 @@
     "pages/guide/guide",
     "pages/premium/packages/packages",
     "pages/payment/payment",
-    "pages/paymentSuccess/paymentSuccess"
+    "pages/paymentSuccess/paymentSuccess",
+    "pages/premium/orderHistory/orderHistory"
   ],
   "window": {
     "backgroundTextStyle": "light",

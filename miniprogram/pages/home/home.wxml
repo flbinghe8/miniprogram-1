@@ -1,4 +1,4 @@
-<!-- pages/home/home.wxml - 纯净上线版 -->
+<!-- pages/home/home.wxml - 防误触版 -->
 <view class="container home">
   <view class="hero">
     <image class="hero-icon" src="/images/logo.png"></image>
@@ -15,29 +15,32 @@
   <view class="workflow-selector">
     <view class="card-list">
       
-      <view class="card" bindtap="handleStart" data-type="sop">
-        <image class="card-icon" src="/images/icon_sop.png"></image> 
-        <view class="card-title">专家级Listing生成</view> 
+      <!-- ✅ 第1张：只有按钮可点 -->
+      <view class="card">
+        <image class="card-icon" src="/images/icon_sop.png"></image>
+        <view class="card-title">专家级Listing生成</view>
         <view class="card-desc">一键生成 7张主图+10段A+视觉SOP</view>
-        <button class="card-button">
+        <button class="card-button" bindtap="handleStart" data-type="sop">
           选择并开始
         </button>
       </view>
 
-      <view class="card" bindtap="handleStart" data-type="title">
+      <!-- ✅ 第2张：只有按钮可点 -->
+      <view class="card">
         <image class="card-icon" src="/images/title-icon.png"></image>
         <view class="card-title">标题五点描述撰写</view>
         <view class="card-desc">一键生成爆款标题和高转化五点描述</view>
-        <button class="card-button">
+        <button class="card-button" bindtap="handleStart" data-type="title">
           选择并开始
         </button>
       </view>
 
-      <view class="card" bindtap="handleStart" data-type="ads">
+      <!-- ✅ 第3张：只有按钮可点 -->
+      <view class="card">
         <image class="card-icon" src="/images/icon_ads.png"></image>
         <view class="card-title">智能广告决策分析</view>
         <view class="card-desc">一键生成五步专家报告，可直接执行</view>
-        <button class="card-button">
+        <button class="card-button" bindtap="handleStart" data-type="ads">
           选择并开始
         </button>
       </view>

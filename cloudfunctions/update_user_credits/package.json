@@ -1,9 +1,7 @@
 {
   "name": "update_user_credits",
   "version": "1.0.0",
-  "description": "更新用户次数",
-  "main": "index.js",
   "dependencies": {
-    "wx-server-sdk": "latest"
+    "wx-server-sdk": "~2.6.3"
   }
 }
